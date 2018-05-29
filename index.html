@@ -1,15 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title></title>
-    <link rel="stylesheet" href="style.css">
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<title>Districts NY</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Hello World!</h1>
-        <button id="btn">Click me</button>
-    </div>
-    <script src="index.js"></script>
+	<div class="container-fluid" id="mainDiv">
+		<h1>
+			<strong>Districts of NY</strong>
+		</h1>
+		<h2>
+			MashUP create for Andres Aldana, UNAL. I-2018
+		</h2>
+		<span id="percentOfLoad"></span>
+
+		<div class="row" id="secondDiv">
+			<div class="col-md-5">
+				<div id="googleMapContainer"></div>
+			</div>
+			<div class="col-md-5">
+
+				<div id="tableWrapper">
+					<div id="tableScroll">
+						<table id="table">
+							<thead>
+								<tr>
+									<th colspan="7" id="titleTable"> <strong>Districts of New York City</strong> </th>
+								</tr>
+								<tr>
+								    <th id="rowNoms"> No. </th>
+									<th id="rowNoms"> District </th>
+									<th id="rowNoms"> Safety(%) </th>
+									<th  id="rowNoms"> Distance to NYU Stern School of Business(km) </th>
+									<th id="rowNoms"> Affordability </th>
+									<th id="rowNoms">  Farmers Markets </th>
+									<th id="rowNoms"> Air Quality </th>
+								</tr>
+								<tbody id="mainTableBody">
+								</tbody>
+							</thead>
+						</table>
+					</div>
+				</div>
+				<br>
+				<div class="col-md-12">
+					<h3>Top 10: Better distance to NYU Stern School of Business(km)</h3>
+					<svg id="statesChart">
+					</svg>
+				</div>
+			</div>
+
+			<div id="menu" class="col-md-2">
+			 <div class="tab">
+				 <center>
+				     <button class="button" id="updateChartButton">Get Top Districts</button>
+				     <button class="button" id="export">Export Data</button>
+						 <button class="button" id="chart">Make Chart</button>
+				 </center>
+			 </div>
+			 <br>
+			 <div id="filters_div" class="tabcontent">
+				 <h5>Distance:</h5>
+				 <input type="range" min="0" max="1" value="1" class="slider" id="slider1"> <span id="slider1_value"></span></input>
+				 <h5>Affordability</h5>
+				 <input type="range" min="0" max="1" value="1" class="slider" id="slider2">
+				<span id="slider2_value"></span><br/>
+				 <h5>Safety</h5>
+				 <input type="range" min="0" max="1" value="1" class="slider" id="slider3">
+				 <span id="slider3_value"></span><br/>
+				 <h5>Air Quality</h5>
+				 <input type="range" min="0" max="1" value="1" class="slider" id="slider4">
+				 <span id="slider4_value"></span><br/>
+ 				<h5> Farmers Markets</h5>
+ 				<input type="range" min="0" max="1" value="1" class="slider" id="slider5">
+ 				<span id="slider5_value"></span><br/>
+			 </div>
+			 <button class="button" id="filters">Filter</button>
+		 </div>
+		</div>
+	</div>
+    <footer class="footer-distributed">
+            <div class="footer-right">
+				<img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Logotipo_de_la_Universidad_Nacional_de_Colombia.svg" alt="UNAL">
+			</div>
+			<div class="footer-left">
+				<p class="footer-links">
+					<a href="#">Home</a>
+					<a href="README.md"> <H5>How Use it?</H5></a>
+				</p>
+				<p>AndresAldana &copy; 2018</p>
+
+			</div>
+		</footer>
+		<!-- d3.j -->
+	 <script src="https://d3js.org/d3.v3.min.js"></script>
+	<script
+	  src="https://code.jquery.com/jquery-3.2.1.min.js"
+	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	  crossorigin="anonymous"></script>
+
+		<!-- Custom js -->
+	<script type="text/javascript" src="index.js"></script>
+		<!-- Google Map -->
+   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_uJ8AiqxB00gUtstj-PclUtMokURcK2I&callback=onGoogleMapResponse"
+    async defer></script>
 </body>
 </html>
