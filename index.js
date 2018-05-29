@@ -101,7 +101,7 @@ function getDataFromURLS(){
                         catch(err)
                         {
                             console.log(err);
-                            if (confirm("Please, refresh page. An error ocurred")) {
+                            if (confirm("An error ocurred with google maps api!!\nPlease, refresh page. ")) {
                                 location.reload();
                             }
                         }
