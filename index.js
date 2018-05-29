@@ -1,3 +1,5 @@
+
+
 var URL_POLYGON_ID = "https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/nycd/FeatureServer/0/query?where=1=1&outFields=*&outSR=4326&f=geojson";
 var URL_NEIGHBORHOOD_NAMES_GIS = "https://data.cityofnewyork.us/api/views/xyye-rtrs/rows.json?accessType=DOWNLOAD";
 var URL_CRIMES_NY = "https://data.cityofnewyork.us/api/views/qgea-i56i/rows.json?accessType=DOWNLOAD";
@@ -57,7 +59,6 @@ getDataFromURLS();
 
 
 function getDataFromURLS(){
-	alert("Please, wait until the page loads...see header of page.");
 	var dataDis = $.get(URL_NEIGHBORHOOD_NAMES_GIS, function(){})
 		.done( function(){
 				var objDis = JSON.parse(dataDis.responseText);
@@ -80,24 +81,31 @@ function getDataFromURLS(){
 
 					BoroughAndDistricts.push(obj3);
 				}
-                try{
-                    directionsService = new google.maps.DirectionsService();
-                }
-                catch(err)
-                {
-                    console.log(err);
-                    alert("Error with google maps api. Please refresh the page.");
-                }
+
 
 				for(var k = 0; k < DistrictsAndCoordenate.length; k++)
 				{
-						var request = {
-												origin      : DistrictsAndCoordenate[k].point,
-												destination : NY_UNIVERSITY_COORDENATES,
-												travelMode  : google.maps.DirectionsTravelMode.DRIVING
-								};
+					    var p1 = NY_UNIVERSITY_COORDENATES;
+                        var p2 = DistrictsAndCoordenate[k].point;
+                        try
+                        {
+                            var p3 = new google.maps.LatLng(parseFloat(p1.lat), parseFloat(p1.lng));
+                            var p4 = new google.maps.LatLng(parseFloat(p2.lat), parseFloat(p2.lng));
 
-						getDistance(request, DistrictsAndCoordenate[k].distric);
+	                        var jjj = {
+	                            distric : DistrictsAndCoordenate[k].distric,
+	                            distance : (google.maps.geometry.spherical.computeDistanceBetween(p3, p4) / 1000).toFixed(2)
+	                        }
+	                        distanceToUN.push(jjj);
+                        }
+                        catch(err)
+                        {
+                            console.log(err);
+                            if (confirm("Please, refresh page. An error ocurred")) {
+                                location.reload();
+                            }
+                        }
+                        
 				}
 		})
 		.fail( function(error){
@@ -201,7 +209,6 @@ function getDataFromURLS(){
 			var dataAfor = $.get(URL_BUILD_NY, function(){})
 				.done( function(){
 						var obj = JSON.parse(dataAfor.responseText);
-						console.log(obj);
 						var n1=0,n2=0,n3=0,n4=0,n5=0, n6 = 0;
 							for(var k = 0; k < obj.data.length; k++)
 							{
@@ -227,14 +234,11 @@ function getDataFromURLS(){
 									n6++;
 								}
 							}
-                            console.log(n6);
 							BoroughAndAffordability.push({ bor:"Bronx", per: (n1/n6).toFixed(2) });
 							BoroughAndAffordability.push({ bor:"Brooklyn", per: (n2/n6).toFixed(2) });
 							BoroughAndAffordability.push({ bor:"Manhattan", per: (n3/n6).toFixed(2) });
 							BoroughAndAffordability.push({ bor:"Queens", per: (n4/n6).toFixed(2) });
 							BoroughAndAffordability.push({ bor:"Staten Island", per: (n5/n6).toFixed(2) });
-							
-							console.log(BoroughAndAffordability);
 
 				})
 				.fail( function(error){
@@ -310,6 +314,8 @@ function onGoogleMapResponse(){
  		center: {lat: 40.7291, lng: -73.9965},
 		zoom: 10
 	});
+	
+	
 
 	directionsDisplay = new google.maps.DirectionsRenderer({
     polylineOptions: {
@@ -363,32 +369,6 @@ function onGoogleMapResponse(){
 			alert("There is a problem with your internet connection. Don't load the map and data. Please, refresh the page.");
 		});
 }
-
-function getDistance(request,district) {
-		directionsService.route(request, function(response, status) {
-        if (status === google.maps.DirectionsStatus.OK) {
-					var obj2 = {
-                        distric: district,
-                        distance:  response.routes[0].legs[0].distance.value / 1000 // the distance in KILOmetres
-            };
-						distanceToUN.push(obj2);
-
-		        var val = document.getElementById("percentOfLoad");
-
-		        if (val) {
-		            val.innerHTML = "Percentage: " + ((distanceToUN.length/299)*100).toFixed(1) + "%"; 
-		        }
-        } else if (status === google.maps.DirectionsStatus.OVER_QUERY_LIMIT) {
-            timeFactor++;
-            setTimeout(function () {
-                getDistance(request, district);
-            }, timeFactor * 1000);
-        } else {
-            alert("Route: " + status );
-        }
-    });
-}
-
 
 
 function export2(){
